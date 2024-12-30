@@ -1,6 +1,7 @@
 package com.anujjainwork.mychess
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,7 +13,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.anujjainwork.mychess.ui.theme.MyChessTheme
 
+private const val TAG = "MainActivityA"
+
 class MainActivity : ComponentActivity() {
+
+    var chessModel = ChessModel()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -22,7 +27,9 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting("Android")
+                    Log.d(TAG,"Hello,Chess")
+                    Log.d(TAG,chessModel.toString())
+                    Greeting("Chess")
                 }
             }
         }
@@ -41,6 +48,6 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 @Composable
 fun GreetingPreview() {
     MyChessTheme {
-        Greeting("Android")
+        Greeting("Chess")
     }
 }
