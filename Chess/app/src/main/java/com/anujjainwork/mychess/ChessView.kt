@@ -9,8 +9,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 
 @Composable
-fun ChessScreen() {
-    val chessPieces = getInitialChessBoard()
+fun ChessScreen(controller: ChessController) {
+    // Use the controller to get the chess pieces
+    val chessPieces = controller.getChessPieces()
 
     ChessBoard(
         pieces = chessPieces,
@@ -19,45 +20,9 @@ fun ChessScreen() {
     )
 }
 
-// Function to initialize the chessboard with pieces
-fun getInitialChessBoard(): Map<Pair<Int, Int>, Int> {
-    return buildMap {
-        // Black pieces
-        put(Pair(0, 0), R.drawable.rook_black)
-        put(Pair(0, 1), R.drawable.knight_black)
-        put(Pair(0, 2), R.drawable.bishop_black)
-        put(Pair(0, 3), R.drawable.queen_black)
-        put(Pair(0, 4), R.drawable.king_black)
-        put(Pair(0, 5), R.drawable.bishop_black)
-        put(Pair(0, 6), R.drawable.knight_black)
-        put(Pair(0, 7), R.drawable.rook_black)
-
-        // Black pawns
-        (0..7).forEach { col ->
-            put(Pair(1, col), R.drawable.pawn_black)
-        }
-
-        // White pieces
-        put(Pair(7, 0), R.drawable.rook_white)
-        put(Pair(7, 1), R.drawable.knight_white)
-        put(Pair(7, 2), R.drawable.bishop_white)
-        put(Pair(7, 3), R.drawable.queen_white)
-        put(Pair(7, 4), R.drawable.king_white)
-        put(Pair(7, 5), R.drawable.bishop_white)
-        put(Pair(7, 6), R.drawable.knight_white)
-        put(Pair(7, 7), R.drawable.rook_white)
-
-        // White pawns
-        (0..7).forEach { col ->
-            put(Pair(6, col), R.drawable.pawn_white)
-        }
-    }
-}
-
-// ChessBoard composable with customizable colors
 @Composable
 fun ChessBoard(
-    pieces: Map<Pair<Int, Int>, Int>,
+    pieces: Set<ChessPiece>,
     lightColor: Color = Color.LightGray,
     darkColor: Color = Color.DarkGray
 ) {
@@ -96,8 +61,9 @@ fun ChessBoard(
             }
 
             // Place chess pieces
-            pieces.forEach { (position, resId) ->
-                val (row, col) = position
+            pieces.forEach { piece ->
+                val resId = piece.getDrawableResId()
+                val (row, col) = piece.row to piece.col
                 Image(
                     painter = painterResource(id = resId),
                     contentDescription = null,
@@ -112,3 +78,14 @@ fun ChessBoard(
         }
     }
 }
+fun ChessPiece.getDrawableResId(): Int {
+    return when (this.rank) {
+        ChessRank.KING -> if (this.player == ChessPlayer.WHITE) R.drawable.king_white else R.drawable.king_black
+        ChessRank.QUEEN -> if (this.player == ChessPlayer.WHITE) R.drawable.queen_white else R.drawable.queen_black
+        ChessRank.ROOK -> if (this.player == ChessPlayer.WHITE) R.drawable.rook_white else R.drawable.rook_black
+        ChessRank.BISHOP -> if (this.player == ChessPlayer.WHITE) R.drawable.bishop_white else R.drawable.bishop_black
+        ChessRank.KNIGHT -> if (this.player == ChessPlayer.WHITE) R.drawable.knight_white else R.drawable.knight_black
+        ChessRank.PAWN -> if (this.player == ChessPlayer.WHITE) R.drawable.pawn_white else R.drawable.pawn_black
+    }
+}
+
