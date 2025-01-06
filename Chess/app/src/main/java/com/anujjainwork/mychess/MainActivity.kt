@@ -14,7 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import com.anujjainwork.mychess.ui.theme.MyChessTheme
 
-private const val TAG = "MainActivityA"
+private const val TAG = "MainActivity"
 
 class MainActivity : ComponentActivity() {
 
@@ -39,7 +39,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun ChessApp(){
-    ChessBoard()
+    ChessScreen()
 }
 
 
